@@ -1,0 +1,39 @@
+:root {
+    --tan: #d2af8b;
+    --lghtBrown: #c08f5d;
+    --drkBrown: #280003;
+    --lghtGray: #4a5859;
+    --drkGray: #2a3d45;
+
+    --lghtText: #fff;
+    --drkText: #111;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tan);
+}
+
+header, main, footer{
+    flex-grow: 1;
+}
+
+img {
+    height: 100%;
+}
+
+.stapler {
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.staple-counter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

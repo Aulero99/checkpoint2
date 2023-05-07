@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Universal Staples</title>
+</head>
+
+<body>
+    <header class="container-fluid">
+        <section class="row">
+            <div class="col-12 staple-counter">
+                <div>
+                    This is where the images goes
+                </div>
+                <p id="stapleCountHTM">
+                    0
+                </p>
+            </div>
+        </section>
+        <section class="row">
+            <div class="col-4">
+                <p>Unsold</p>
+                <p id="unsoldStapleCountHTM">0</p>
+            </div>
+            <div class="col-4">
+                <p>Price</p>
+                <div class="d-flex flex-row">
+                    <button onclick="priceChange(1)">+</button>
+                    <p id="staplePriceHTM">$0.01</p>
+                    <button onclick="priceChange(-1)">-</button>
+                </div>
+            </div>
+            <div class="col-4">
+                <p>Money</p>
+                <p>Number</p>
+            </div>
+        </section>
+        <section class="row">
+            <div class="col-4"></div>
+            <div class="col-4">DEMAND: <span id="stapleDemandHTM">100%</span></div>
+            <div class="col-4">money/sec</div>
+        </section>
+    </header>
+    
+    <main class="container-fluid">
+        <section class="row">
+            <div id="staplerHTM" class="col-12 stapler" onclick="increaseStapleCount(1)">
+                <img src="assets/Images/Stapler.svg">
+            </div>
+        </section>
+    </main>
+    
+    <footer class="container-fluid">
+        <section class="row">
+            this is where the shop goes
+        </section>
+    </footer>
+
+    <div for="scripts" class="d-none">
+        <script src="app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"
+        defer></script>
+    </div>
+
+</body>
+</html>
