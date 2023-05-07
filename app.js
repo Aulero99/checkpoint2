@@ -2,28 +2,49 @@ let stapleCount = 0
 let unsoldStapleCount = 0
 let staplePrice = 1
 
+let money = 0
+let wire = 1
+
 let stapleDemand = 100
 let stapleDemandMultiplier = 1
 let stapleDemandOperator = 1
+let currentStapleDemand = 0
 
-
-const storeItems = [
-    {
-        name:'Auto Stapler',
-        cost: 10,
-        
-    }
+const marketingPriceArray = [
+    100,
+    400,
+    800,
+    4000,
+    12000,
+    50000,
+    150000,
+    500000,
+    1250000,
 ]
+let marketTrack = 0
+
+
+
+// These are the universal interval updaters for
+// the money and staple increases
+let writeStapleCountInterval = setInterval(writeStapleCount, 100)
+let sellStapleInterval = setInterval(sellStaple, 100)
+
 
 // These functions take in how many staples to add to the tracker
 // then writes those changes both to the total staple count
 // as well as the unsold staple count
 function increaseStapleCount(number){
+    if (wire<=0){
+        return
+    }else{
+    wire--
     stapleCount += number
     unsoldStapleCount += number
     writeUnsoldStapleCount(number)
     writeStapleCount()
     storeCheck()
+    }
 }
 
 function writeStapleCount(){
@@ -96,13 +117,62 @@ function calculateStapleDemand(){
         stapleDemand = 1
     }
     result = stapleDemand * stapleDemandMultiplier
-    writeStapleDemand(result)
+    currentStapleDemand = result
+    console.log(currentStapleDemand);
+    clearInterval(sellStapleInterval)
+    sellStapleInterval = setInterval(sellStaple, 1000/stapleDemand)
+    writeStapleDemand()
 }
 
-function writeStapleDemand(number){
-    document.getElementById('stapleDemandHTM').innerText = number + '%'
+function writeStapleDemand(){
+    document.getElementById('stapleDemandHTM').innerText = currentStapleDemand + '%'
+}
+
+// This function increases the level of marketing
+function marketIncrease(){
+    if(marketingPriceArray[marketTrack] > money){
+        return
+    }else{
+        money -= marketingPriceArray[marketTrack]
+        stapleDemandOperator++
+        marketTrack++
+        document.getElementById('marketingHTM').innerText=stapleDemandOperator
+        document.getElementById('marketingPriceHTM').innerText = '$' + marketingPriceArray[marketTrack]
+        calculateStapleDemand()
+        writeMoney()
+    }
+}
+
+// This function calculates the number of staples to sell
+// based on the stapleDemand variable
+// then sells them at the current price index
+// and writes that number to the dom
+function calculateStapleSales(){
+    let sales = 0
+}
+
+function sellStaple(){
+    if (unsoldStapleCount < 1){
+        unsoldStapleCount = 0
+        return
+    }else {
+        money = ((money*100)+staplePrice)/100
+        unsoldStapleCount--
+        writeUnsoldStapleCount()
+        writeMoney()
+    }
+}
+
+// This function updates the money on the don
+function writeMoney(){
+    let moneyFix = money*100
+    moneyFix = Math.floor(moneyFix)/100
+    document.getElementById('moneyHTM').innerText = '$' + moneyFix
+    writeUnsoldStapleCount()
 }
 
 // These functions update the store periodically based on
 // the number of staples you have produced
-function
+function storeCheck(){
+    console.log('storecheck');
+}

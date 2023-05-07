@@ -19,37 +19,59 @@
 <body>
     <header class="container-fluid">
         <section class="row">
-            <div class="col-12 staple-counter">
-                <div>
-                    This is where the images goes
+            <div class="col-12 staple-counter p-2">
+                <div class="image-box">
+                   <img src="assets/images/Staples.svg" alt="Staples">
                 </div>
                 <p id="stapleCountHTM">
                     0
                 </p>
             </div>
         </section>
-        <section class="row">
-            <div class="col-4">
-                <p>Unsold</p>
+
+        <section class="money-info row">
+            <div class="col-4 text-center">
+                <p>UNSOLD:</p>
                 <p id="unsoldStapleCountHTM">0</p>
             </div>
-            <div class="col-4">
-                <p>Price</p>
+            <div class="col-4 price-setting">
+                <p>PRICE:</p>
                 <div class="d-flex flex-row">
                     <button onclick="priceChange(1)">+</button>
                     <p id="staplePriceHTM">$0.01</p>
                     <button onclick="priceChange(-1)">-</button>
                 </div>
             </div>
-            <div class="col-4">
-                <p>Money</p>
-                <p>Number</p>
+            <div class="col-4 text-center">
+                <p>MONEY:</p>
+                <p id="moneyHTM">$0</p>
             </div>
         </section>
+
         <section class="row">
-            <div class="col-4"></div>
-            <div class="col-4">DEMAND: <span id="stapleDemandHTM">100%</span></div>
-            <div class="col-4">money/sec</div>
+
+            <div for="demand" class="d-flex col-4 text-center">
+                <div class="resource-info-card">
+                    <p>DEMAND:</p> 
+                    <p><span id="stapleDemandHTM">100%</span></p>
+                </div>
+            </div>
+
+            <div for="marketing" class="d-flex col-4 text-center" onclick="marketIncrease()">
+                <div class="resource-info-card">
+                    <p>MARKETING: <span id="marketingHTM">1</span></p>
+                    <p id="marketingPriceHTM">$100</p>
+                </div>
+            </div>
+
+            <div for="moneyrate" class="d-flex col-4 text-center">
+                <div class="resource-info-card">
+                    <p>
+                        money/sec
+                    </p>
+                </div>
+                
+            </div>
         </section>
     </header>
     
@@ -62,7 +84,7 @@
     </main>
     
     <footer class="container-fluid">
-        <section class="row">
+        <section class="shop-container row">
             this is where the shop goes
         </section>
     </footer>
