@@ -10,7 +10,7 @@
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: var(--tan);
@@ -18,6 +18,12 @@ body {
 
 header, main, footer{
     flex-grow: 1;
+}
+
+footer{
+    background-color: var(--lghtBrown);
+    border-top: solid 1rem;
+    border-color: var(--drkGray);
 }
 
 img {
@@ -30,12 +36,31 @@ p{
     font-size: 0.8rem;
 }
 
+h3{
+    padding: 0;
+    margin: 0;
+}
+
 .stapler {
-    height: 30vh;
+    height: 27vh;
     display: flex;
     justify-content: center;
     justify-items: center;
     align-items: center;
+    background-image: url('assets/Images/Stapler.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    user-select: none;
+}
+
+.stapler .level{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .staple-counter {
@@ -83,8 +108,23 @@ p{
 }
 
 .shop-container{
-    background-color: var(--lghtBrown);
-    border-top: solid 1rem;
-    border-color: var(--drkGray);
-    height: 100%;
+    padding-top: 1rem;
+}
+
+.upgrade-image-container {
+    min-height: 3rem;
+    height: 9vh;
+}
+
+.upgrade-card {
+    padding: 0.5rem;
+    background-color: var(--drkBrown);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 90%;
+    border: 0;
+    border-radius: 1rem;
+    margin-bottom: 0.7rem;
 }
