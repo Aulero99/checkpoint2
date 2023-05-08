@@ -1,7 +1,7 @@
 let stapleCount = 0
 let staplePrice = 0
 
-let money = 10000000
+let money = 10
 
 let wire = 1000
 let wireLength = 1000
