@@ -118,6 +118,7 @@ function marketIncrease(){
     }
     marketTrack++
     writeMarket()
+    writeClickUpgrade()
 }
 function writeMarket(){
     let price = (marketTrack ** 2)**2
@@ -220,19 +221,24 @@ function clickUpgrade(number){
 
     clickLevel+=number
     clickPrice = (clickLevel*2)-1
-    writeClickUpgrade(clickPrice)
+    writeClickUpgrade()
 }
 function writeClickUpgrade(number){
+    let income = (clickLevel*staplePrice)/100
+    let clickPrice = ((clickLevel-1)*2)-1
+    if (clickPrice<=0){
+        clickPrice = 1
+    }
     let clickElementUpgrade = `
     <div id="staplerHTM" class="col-12 stapler" onclick="increaseStapleCount(${clickLevel})">
         <div class="level">
-            <h3>Level <span id="clickLevelHTM">${clickLevel}</span></h3>
+            <h3>Income $<span id="clickLevelHTM">${income}</span></h3>
         </div>
     </div>
     `
 
     document.getElementById('clickUpgradeLevelHTM').innerText = clickLevel
-    document.getElementById('clickPriceHTM').innerText = number
+    document.getElementById('clickPriceHTM').innerText = clickPrice
     document.getElementById('clickLevelContainerHTM').innerHTML = clickElementUpgrade
 }
 
@@ -382,6 +388,7 @@ function autoWireCheck(){
 // These are used to track the production speed of
 // both money and staples
 let incomeTrackInterval = setInterval(incomeTrack, 1000)
+
 let moneyTrack1 = 0
 let moneyTrack2 = 0
 let stapleTrack1 = 0
