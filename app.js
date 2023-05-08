@@ -1,13 +1,13 @@
 let stapleCount = 0
 let staplePrice = 0
 
-let money = 999999999999
+let money = 10000000
 
 let wire = 1000
 let wireLength = 1000
 let wirePrice = 1
 let wireUpgradeLevel = 1
-let wireUpgradePrice = 500
+let autoWireBuyer = ''
 
 let autoWire = false
 
@@ -22,13 +22,12 @@ let clickLevel = 1
 let marketTrack = 1
 
 const wirePriceArray = [
-    {min:1,max:4, length: 1000},
-    {min:2,max:12, length: 5000},
-    {min:14,max:28, length: 15000},
-    {min:50,max:100, length: 100000}
+    {min:1,max:3, seg:1000, price:500},
+    {min:2,max:9, seg:5000, price:1000},
+    {min:14,max:28, seg:15000, price:2000},
+    {min:50,max:100, seg:1000001, price:0}
 ]
 let wireTrack = 0
-
 
 
 
@@ -76,7 +75,6 @@ function increaseWireLength(){
         return
     }else{
         money-=wirePrice
-        wire+=wireLength
         writeWireLength(wireLength)
         writeMoney()
     }
@@ -108,7 +106,7 @@ function writeStaplePrice(){
 
 // This function increases the level of marketing
 function marketIncrease(){
-    let price = marketTrack ** 2
+    let price = (marketTrack ** 2)**2
 
     // This section takes that price value and compares it to
     // the money on hand, and if there is not enough it sets the
@@ -122,7 +120,7 @@ function marketIncrease(){
     writeMarket()
 }
 function writeMarket(){
-    price = (marketTrack ** 2)**2
+    let price = (marketTrack ** 2)**2
 
     document.getElementById('marketingHTM').innerText=marketTrack
     document.getElementById('marketingPriceHTM').innerText = '$' + price
@@ -143,14 +141,6 @@ function writeMoney(){
 
 
 
-// These functions update the store periodically based on
-// the number of staples you have produced
-function storeCheck(){
-    console.log('storecheck');
-}
-
-
-
 
 // These are the functions for the auto staplers
 // let autoStapleRate = 1000
@@ -165,15 +155,25 @@ function autoSmallIncrease(number){
         writeSmallStapleCountInterval = setInterval(autoStapleGenSmall, autoStapleRate)
         console.log('interval set');
     }
+    // checks the price
+    let price = Math.floor(((autoStapleSmall + 1)**2)/2) + 1
+
+    if (price>money){
+        return
+    }
+
+    money -= price
     autoStapleSmall += number
-    writeAutoSmall()
+    price = Math.floor(((autoStapleSmall + 1)**2)/2)+ 1
+    writeAutoSmall(price)
 }
 function autoStapleGenSmall(){
     increaseStapleCount(autoStapleSmall*autoStapleSmallMultiplier)
 }
-function writeAutoSmall(){
-    // TODO 
-    console.log('writeAutoSmall()')
+function writeAutoSmall(price){
+    document.getElementById('autoSmallQtyHTM').innerText = autoStapleSmall
+    document.getElementById('autoSmallPriceHTM').innerText = price
+    writeMoney()
 }
 
 function autoLargeIncrease(number){
@@ -183,16 +183,25 @@ function autoLargeIncrease(number){
         writeLargeStapleCountInterval = setInterval(autoStapleGenLarge, autoStapleRate)
         console.log('interval set');
     }
+    // checks the price
+    let price = (autoStapleLarge)**4 + 500
+
+    if (price>money){
+        return
+    }
+
+    money -= price
     autoStapleLarge += number
-    writeAutoLarge()
+    price = (autoStapleLarge)**4 + 500
+    writeAutoLarge(price)
 }
 function autoStapleGenLarge(){
     increaseStapleCount(autoStapleLarge*autoStapleLargeMultiplier)
 }
-function writeAutoLarge(){
-    // TODO
-    console.log('writeAutoLarge()')
-    
+function writeAutoLarge(price){
+    document.getElementById('autoLargeQtyHTM').innerText = autoStapleLarge
+    document.getElementById('autoLargePriceHTM').innerText = price
+    writeMoney()
 }
 
 
@@ -201,13 +210,16 @@ function writeAutoLarge(){
 // These are the functions for the click upgrades
 function clickUpgrade(number){
     let clickPrice = (clickLevel*2)-1
-    console.log(clickPrice);
     
     if(clickPrice>money){
         return
     }
 
+    money -= clickPrice
+    writeMoney()
+
     clickLevel+=number
+    clickPrice = (clickLevel*2)-1
     writeClickUpgrade(clickPrice)
 }
 function writeClickUpgrade(number){
@@ -219,8 +231,6 @@ function writeClickUpgrade(number){
     </div>
     `
 
-    money -= number
-    writeMoney()
     document.getElementById('clickUpgradeLevelHTM').innerText = clickLevel
     document.getElementById('clickPriceHTM').innerText = number
     document.getElementById('clickLevelContainerHTM').innerHTML = clickElementUpgrade
@@ -238,35 +248,136 @@ function writeClickUpgrade(number){
 // wireUpgradeLevel = 1
 // wireUpgradePrice = 500
 // wirePriceArray[]
-function wireUpgrade(number){
-    console.log('wireUpgrade ' + wireUpgradeLevel);
-    if(wireUpgradePrice>money){
+let wireMarketUpdate = setInterval(calculateWireMarket, 3000)
+
+// This function checks to see if there is enough money in the account
+// to upgrade the wire, then charges for it
+function wireUpgrade(){
+    let price = wirePriceArray[wireUpgradeLevel-1].price
+    if(price>money){
         return
     }
-    money -= wireUpgradePrice
-    wireUpgradePrice += 500
-    if(wireUpgradeLevel<wirePriceArray.length){
-        wireUpgradeLevel++
-    }else{
-        wireUpgradeLevel = wirePriceArray.length
-    }
-    drawWire()
-}
-function drawWire(){
-    let array = wirePriceArray
-    let price = Math.floor(Math.random()*(array[wireUpgradeLevel-1].max - array[wireUpgradeLevel-1].min) +1 +array[wireUpgradeLevel-1].min)
-    wireLength = array[wireUpgradeLevel-1].length
-
-    document.getElementById('wireUpgradeLevelHTM').innerText = wireUpgradeLevel
-    document.getElementById('wireUpgradePriceHTM').innerText = wireUpgradePrice
-    document.getElementById('wirePurchaseHTM').innerText = price
-    document.getElementById('wirePurchaseLengthHTM').innerText = wireLength
+    console.log('The price is ' + price);
+    money-=price
 
     writeMoney()
+    writeWire()
+}
+function writeWire(){
+    let array = wirePriceArray
+
+    if(wireUpgradeLevel < array.length-1){
+        wireUpgradeLevel++
+
+        let Price = array[wireUpgradeLevel - 1].price
+
+        document.getElementById('wireUpgradeLevelHTM').innerText = wireUpgradeLevel
+        document.getElementById('wireUpgradePriceHTM').innerText = '$' + Price
+
+        calculateWireMarket()
+    }else{
+        document.getElementById('wireUpgradeLevelHTM').innerText = 'MAX'
+        document.getElementById('wireUpgradePriceHTM').innerText = 'MAX'
+        wireUpgradeLevel = array.length
+    }
+    
+}
+function calculateWireMarket(){
+    let array = wirePriceArray
+    let price = Math.floor(Math.random()*(array[wireUpgradeLevel-1].max - array[wireUpgradeLevel-1].min) +1 +array[wireUpgradeLevel-1].min)
+    wireLength = array[wireUpgradeLevel-1].seg
+
+    document.getElementById('wirePurchaseHTM').innerText = price
+    document.getElementById('wirePurchaseLengthHTM').innerText = wireLength
 }
 
 
 
+
+
+// These functions update the store periodically based on
+// the number of staples you have produced
+// then writes these upgrades to the dom
+const storeItemArray = [
+    {
+        title: 'Auto Wire',
+        desc: 'Buys wire automatically',
+        price: 5000,
+        effect: 'null',
+        function: function autoWireOn(){
+            autoWireBuyer = setInterval(autoWireCheck, 100)
+        }
+    },
+    {
+        title: 'Random Item',
+        desc: 'does nothing',
+        price: 5,
+        effect: 'null',
+        function: function storeBlank1(){
+            console.log('did nothing');
+        }
+    },
+    {
+        title: 'Stapler Sale',
+        desc: 'AutoStaplers on Sale!',
+        price: 50,
+        effect: 'autoSmallIncrease(10)',
+        function: function storeBlank2(){
+            console.log('gained 10 small staplers');
+        }
+    }
+]
+let storeOperator = 0
+function storeCheck(){
+    if(stapleCount >= 10 && storeOperator == 0){
+        writeStore(0)
+        storeOperator++
+        return
+    }else if(stapleCount >= 12 && storeOperator == 1){
+        writeStore(1)
+        storeOperator++
+        return
+    }else if (stapleCount >= 500 && storeOperator == 2) {
+        writeStore(2)
+        storeOperator++
+        return
+    }else{
+        return
+    }
+}
+function writeStore(number){
+    let array = storeItemArray[number]
+    let template = `
+    <div class="d-flex flex-row one-off-upgrade" id="oneOff${number}" onclick="executeOneOff(${number},${array.price}),  ${array.effect}">
+        <h5>${array.title}</h5>
+        <p>${array.desc}</p>
+        <p>$${array.price}</p>
+    </div>`
+    document.getElementById('oneOffUpgradesHTM').innerHTML += template
+}
+function executeOneOff(number,price){
+    if(price>money){
+        return
+    }
+
+    let ident = 'oneOff' + number
+    let element = document.getElementById(ident)
+    element.parentNode.removeChild(element);
+
+    money -= storeItemArray[number].price
+    writeMoney()
+    storeItemArray[number].function();
+}
+
+
+// This is the companion function to turn on auto wire
+function autoWireCheck(){
+    if (wire>0){
+        return
+    }else{
+        increaseWireLength()
+    }
+}
 
 // These are used to track the production speed of
 // both money and staples

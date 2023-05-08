@@ -22,7 +22,7 @@ header, main, footer{
 
 footer{
     background-color: var(--lghtBrown);
-    border-top: solid 1rem;
+    border-top: solid 0.5rem;
     border-color: var(--drkGray);
 }
 
@@ -34,6 +34,7 @@ p{
     padding: 0;
     margin: 0;
     font-size: 0.8rem;
+    font-weight: 400;
 }
 
 h3{
@@ -42,8 +43,12 @@ h3{
 }
 
 .stapler {
-    height: 27vh;
+    height: 29vh;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     display: flex;
+    user-select: none;
+    cursor: pointer;
     justify-content: center;
     justify-items: center;
     align-items: center;
@@ -52,6 +57,11 @@ h3{
     background-repeat: no-repeat;
     background-position: center;
     user-select: none;
+    color: #966037;
+}
+
+.stapler:active{
+    background-image: url(assets/Images/Stapler-closed.svg);
 }
 
 .stapler .level{
@@ -68,6 +78,7 @@ h3{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    padding: 0.5rem 0.5rem 0.5rem 3rem;
     background-color: var(--lghtGray);
     color: var(--lghtText);
 }
@@ -78,6 +89,11 @@ h3{
 
 .staple-counter .image-box img{
     padding-right: 1rem;
+}
+
+.staple-counter p{
+    font-size: 1.7rem;
+    font-weight: bold;
 }
 
 .money-info {
@@ -95,6 +111,32 @@ h3{
 
 .resource-info-card{
     background-color: var(--drkBrown);
+    cursor: pointer;
+    user-select: none;
+    color: var(--lghtText);
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    margin: 0 15%;
+    padding: 0.25rem 0;
+    border: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    transition: 50ms;
+}
+
+.resource-info-card:hover{
+    color: var(--drkText);
+    background-color: var(--lghtBrown);
+    box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+}
+
+.resource-info-card-nosel{
+    background-color: var(--lghtGray);
+    user-select: none;
     color: var(--lghtText);
     justify-self: center;
     display: flex;
@@ -118,6 +160,8 @@ h3{
 
 .upgrade-card {
     padding: 0.5rem;
+    cursor: pointer;
+    user-select: none;
     background-color: var(--drkBrown);
     color: white;
     justify-content: center;
@@ -125,6 +169,51 @@ h3{
     align-self: center;
     width: 90%;
     border: 0;
-    border-radius: 1rem;
+    border-radius: 0.6rem;
     margin-bottom: 0.7rem;
+    transition: 50ms;
+}
+
+.upgrade-card:hover{
+    color: var(--drkText);
+    background-color: var(--tan);
+    box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+}
+
+.one-off-upgrade {
+    background-color: var(--drkBrown);
+    user-select: none;
+    cursor: pointer;
+    color: var(--lghtText);
+    padding: 0.45rem;
+    border: 0;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    transition: 50ms;
+}
+
+.one-off-upgrade:hover {
+    color: var(--drkText);
+    background-color: var(--tan);
+    box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 32px -13px rgba(0,0,0,0.75);
+}
+
+.one-off-upgrade h5{
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+}
+
+.one-off-upgrade p{
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
 }

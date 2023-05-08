@@ -19,7 +19,7 @@
 <body>
     <header class="container-fluid">
         <section class="row">
-            <div class="col-12 staple-counter p-2">
+            <div class="col-12 staple-counter">
                 <div class="image-box">
                    <img src="assets/images/Staples.svg" alt="Staples">
                 </div>
@@ -51,13 +51,13 @@
         <section class="row">
 
             <div for="demand" class="d-flex col-4 text-center">
-                <div class="resource-info-card" onclick="increaseWireLength()">
+                <div class="resource-info-card" title="Wire is essential to make staples, this buys more of it." onclick="increaseWireLength()">
                     <p>MARKET RATE:</p> 
                     <p>$<span id="wirePurchaseHTM">1</span> / <span id="wirePurchaseLengthHTM">1000</span></p>
                 </div>
             </div>
 
-            <div for="marketing" class="d-flex col-4 text-center" onclick="marketIncrease()">
+            <div for="marketing" title="This increases the sale price of the staples." class="d-flex col-4 text-center" onclick="marketIncrease()">
                 <div class="resource-info-card">
                     <p>MARKETING: <span id="marketingHTM">1</span></p>
                     <p id="marketingPriceHTM">$100</p>
@@ -65,7 +65,7 @@
             </div>
 
             <div for="moneyrate" class="d-flex col-4 text-center">
-                <div class="resource-info-card">
+                <div class="resource-info-card-nosel">
                     <p>
                         MONEY/SEC: $<span id="incomeMoneyHTM">0</span>
                     </p>
@@ -83,7 +83,7 @@
 
             <div id="staplerHTM" class="col-12 stapler" onclick="increaseStapleCount(1)">
                     <div class="level">
-                        <h3>Level <span id="clickLevelHTM">1</span></h3>
+                        <h4>Level <span id="clickLevelHTM">1</span></h4>
                     </div>
             </div>
 
@@ -98,10 +98,10 @@
                         <div class="upgrade-image-container flex-grow-1">
                             <img src="assets/Images/pointer.png" alt="Pointer">
                         </div>
-                        <div class="d-flex flex-column flex-grow-1">
+                        <div title="This increases the number of staples made with your clicky stapler." class="d-flex flex-column flex-grow-1">
                             <h4>Clicker</h4>
                             <p>LEVEL: <span id="clickUpgradeLevelHTM">1</span></p>
-                            <p>PRICE: <span id="clickPriceHTM">1</span></p>
+                            <p>PRICE: $<span id="clickPriceHTM">1</span></p>
                         </div>
                     </div>
                 
@@ -109,61 +109,41 @@
                         <div class="upgrade-image-container flex-grow-1">
                             <img src="assets/Images/Wire.svg" alt="Wire">
                         </div>
-                        <div class="d-flex flex-column flex-grow-1">
+                        <div for="wireSupply" title="This increases the amount of wire bought at once. WARNING, this also increases the price as well." class="d-flex flex-column flex-grow-1">
                             <h4>Wire Supply</h4>
                             <p>LEVEL: <span id="wireUpgradeLevelHTM">1</span></p>
-                            <p>PRICE: <span id="wireUpgradePriceHTM">500</span></p>
+                            <p>PRICE: <span id="wireUpgradePriceHTM">$500</span></p>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-12 col-md-4 d-flex flex-column">
 
-                    <div for="smallAutoStapler" onclick="autoSmallIncrease(1)" class="d-flex flex-row upgrade-card">
+                    <div for="smallAutoStapler" title="This adds an auto stapler that makes 1 staple per second." onclick="autoSmallIncrease(1)" class="d-flex flex-row upgrade-card">
                         <div class="upgrade-image-container flex-grow-1">
                             <img src="assets/Images/AutoStaplerSmall.svg" alt="StaplerMini">
                         </div>
                         <div class="d-flex flex-column flex-grow-1">
                             <h4>AutoStapler</h4>
-                            <p>QTY: <span>0</span></p>
-                            <p>PRICE: $<span>0</span></p>
+                            <p>QTY: <span id="autoSmallQtyHTM">0</span></p>
+                            <p>PRICE: $<span id="autoSmallPriceHTM">1</span></p>
                         </div>
                     </div>
 
-                    <div for="largeAutoStapler" onclick="autoLargeIncrease(1)" class="d-flex flex-row upgrade-card">
+                    <div for="largeAutoStapler" title="This adds an auto stapler that is literally 500x better than the smaller version." onclick="autoLargeIncrease(1)" class="d-flex flex-row upgrade-card">
                         <div class="upgrade-image-container flex-grow-1">
                             <img src="assets/Images/AutoStaplerLarge.svg" alt="StaplerLarge">
                         </div>
                         <div class="d-flex flex-column flex-grow-1">
                             <h4>MaxStapler</h4>
-                            <p>QTY: <span>0</span></p>
-                            <p>PRICE: $<span>0</span></p>
+                            <p>QTY: <span id="autoLargeQtyHTM">0</span></p>
+                            <p>PRICE: $<span id="autoLargePriceHTM">500</span></p>
                         </div>
                     </div>
 
                 </div>
 
-                <div for="micro-upgrades" class="col-12 col-md-4 d-flex flex-column">
-
-                    <div class="d-flex flex-row">
-                        <div>
-                            <img src="" alt="Upgrade">
-                        </div>
-                            <p>description</p>
-                    </div>
-
-                    <div class="d-flex flex-row">
-                        <div>
-                            <img src="" alt="Upgrade">
-                        </div>
-                            <p>description</p>
-                    </div>
-                    <div class="d-flex flex-row">
-                        <div>
-                            <img src="" alt="Upgrade">
-                        </div>
-                            <p>description</p>
-                    </div>
+                <div for="micro-upgrades" id="oneOffUpgradesHTM" class="col-12 col-md-4 d-flex flex-column">
 
                 </div>
 
