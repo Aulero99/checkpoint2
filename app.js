@@ -1,178 +1,297 @@
 let stapleCount = 0
-let unsoldStapleCount = 0
-let staplePrice = 1
+let staplePrice = 0
 
-let money = 0
-let wire = 1
+let money = 999999999999
 
-let stapleDemand = 100
-let stapleDemandMultiplier = 1
-let stapleDemandOperator = 1
-let currentStapleDemand = 0
+let wire = 1000
+let wireLength = 1000
+let wirePrice = 1
+let wireUpgradeLevel = 1
+let wireUpgradePrice = 500
 
-const marketingPriceArray = [
-    100,
-    400,
-    800,
-    4000,
-    12000,
-    50000,
-    150000,
-    500000,
-    1250000,
+let autoWire = false
+
+let autoStapleRate = 1000
+let autoStapleSmall = 0
+let autoStapleSmallMultiplier = 1
+let autoStapleLarge = 0
+let autoStapleLargeMultiplier = 500
+
+let clickLevel = 1
+
+let marketTrack = 1
+
+const wirePriceArray = [
+    {min:1,max:4, length: 1000},
+    {min:2,max:12, length: 5000},
+    {min:14,max:28, length: 15000},
+    {min:50,max:100, length: 100000}
 ]
-let marketTrack = 0
+let wireTrack = 0
+
 
 
 
 // These are the universal interval updaters for
 // the money and staple increases
-let writeStapleCountInterval = setInterval(writeStapleCount, 100)
-let sellStapleInterval = setInterval(sellStaple, 100)
+let writeSmallStapleCountInterval = undefined
+let writeLargeStapleCountInterval = undefined
+
+
 
 
 // These functions take in how many staples to add to the tracker
 // then writes those changes both to the total staple count
 // as well as the unsold staple count
 function increaseStapleCount(number){
+    let staples = number
     if (wire<=0){
+        wire = 0
         return
-    }else{
-    wire--
-    stapleCount += number
-    unsoldStapleCount += number
-    writeUnsoldStapleCount(number)
+    }
+    if(wire<number){
+        staples = wire
+    }
+    stapleCount += staples
+
+    money+=(staplePrice/100)*staples
+
     writeStapleCount()
     storeCheck()
-    }
+    writeWireLength(-staples)
+    writeMoney()
 }
-
 function writeStapleCount(){
     document.getElementById('stapleCountHTM').innerText=stapleCount
 }
 
-function writeUnsoldStapleCount(){
-    document.getElementById('unsoldStapleCountHTM').innerText=unsoldStapleCount
+
+
+
+// These functions deduct the cost of the wire index from
+// the money then increase wire length by the wire
+// length variable
+function increaseWireLength(){
+    if(money<wirePrice){
+        return
+    }else{
+        money-=wirePrice
+        wire+=wireLength
+        writeWireLength(wireLength)
+        writeMoney()
+    }
 }
+function writeWireLength(number){
+    wire += number
+    document.getElementById('wireLengthHTM').innerText=wire
+}
+
+
 
 
 // These functions take in an argument for how much to change the
 // price of staples by, then writes the price of the staples tracked
 // by the staplePrice variable which is globally defined
-// then calls the function writeStapleDemand() to calculate
-// current demand
 function priceChange(number){
     staplePrice += number
-    if(staplePrice < 1){
-        staplePrice = 1
-    }else if(staplePrice > 100){
-        staplePrice = 100
-    }else{
-        writeStaplePrice()
-        calculateStapleDemand()
-    }
+    writeStaplePrice()
 }
-
 function writeStaplePrice(){
     let number = ''
-    if(staplePrice >= 100){
-        number = '$1.00'
-    }else{
-        if(staplePrice == 10){
-            number = '$0.10'
-        }else if(staplePrice == 20){
-            number = '$0.20'
-        }else if(staplePrice == 30){
-            number = '$0.30'
-        }else if(staplePrice == 40){
-            number = '$0.40'
-        }else if(staplePrice == 50){
-            number = '$0.50'
-        }else if(staplePrice == 60){
-            number = '$0.60'
-        }else if(staplePrice == 70){
-            number = '$0.70'
-        }else if(staplePrice == 80){
-            number = '$0.80'
-        }else if(staplePrice == 90){
-            number = '$0.90'
-        }else{
-            number = '$' + (staplePrice/100)
-        }
-    }
+    number = '$' + (staplePrice/100)
+    
     document.getElementById('staplePriceHTM').innerText=number
 }
 
 
-// These functions calculate the current demand for staples then
-// sets that result to the stapleDemand variable, then
-// calls the write function with a result that multiplies
-// the demand with the current multiplier
-// while also using the operator to influence the demand in an
-// organic way
-function calculateStapleDemand(){
-    stapleDemand = 100
-    stapleDemand -= Math.floor(100-(100 *(stapleDemandOperator/staplePrice)))
-    if (stapleDemand <= 1){
-        stapleDemand = 1
-    }
-    result = stapleDemand * stapleDemandMultiplier
-    currentStapleDemand = result
-    console.log(currentStapleDemand);
-    clearInterval(sellStapleInterval)
-    sellStapleInterval = setInterval(sellStaple, 1000/stapleDemand)
-    writeStapleDemand()
-}
 
-function writeStapleDemand(){
-    document.getElementById('stapleDemandHTM').innerText = currentStapleDemand + '%'
-}
 
 // This function increases the level of marketing
 function marketIncrease(){
-    if(marketingPriceArray[marketTrack] > money){
+    let price = marketTrack ** 2
+
+    // This section takes that price value and compares it to
+    // the money on hand, and if there is not enough it sets the
+    // track back by 1 then returns
+    if(price > money){
         return
     }else{
-        money -= marketingPriceArray[marketTrack]
-        stapleDemandOperator++
-        marketTrack++
-        document.getElementById('marketingHTM').innerText=stapleDemandOperator
-        document.getElementById('marketingPriceHTM').innerText = '$' + marketingPriceArray[marketTrack]
-        calculateStapleDemand()
-        writeMoney()
+        money -= price
     }
+    marketTrack++
+    writeMarket()
+}
+function writeMarket(){
+    price = (marketTrack ** 2)**2
+
+    document.getElementById('marketingHTM').innerText=marketTrack
+    document.getElementById('marketingPriceHTM').innerText = '$' + price
+    priceChange(1)
+    writeMoney()
 }
 
-// This function calculates the number of staples to sell
-// based on the stapleDemand variable
-// then sells them at the current price index
-// and writes that number to the dom
-function calculateStapleSales(){
-    let sales = 0
-}
 
-function sellStaple(){
-    if (unsoldStapleCount < 1){
-        unsoldStapleCount = 0
-        return
-    }else {
-        money = ((money*100)+staplePrice)/100
-        unsoldStapleCount--
-        writeUnsoldStapleCount()
-        writeMoney()
-    }
-}
 
-// This function updates the money on the don
+
+// This function updates the money on the dom
 function writeMoney(){
     let moneyFix = money*100
     moneyFix = Math.floor(moneyFix)/100
     document.getElementById('moneyHTM').innerText = '$' + moneyFix
-    writeUnsoldStapleCount()
 }
+
+
+
 
 // These functions update the store periodically based on
 // the number of staples you have produced
 function storeCheck(){
     console.log('storecheck');
 }
+
+
+
+
+// These are the functions for the auto staplers
+// let autoStapleRate = 1000
+// let autoStapleSmall = 0
+// let autoStapleSmallMultiplier = 1
+// let autoStapleLarge = 0
+// let autoStapleLargeMultiplier = 500
+function autoSmallIncrease(number){
+    // Starts the interval
+    if(writeSmallStapleCountInterval == undefined){
+        clearInterval(writeSmallStapleCountInterval)
+        writeSmallStapleCountInterval = setInterval(autoStapleGenSmall, autoStapleRate)
+        console.log('interval set');
+    }
+    autoStapleSmall += number
+    writeAutoSmall()
+}
+function autoStapleGenSmall(){
+    increaseStapleCount(autoStapleSmall*autoStapleSmallMultiplier)
+}
+function writeAutoSmall(){
+    // TODO 
+    console.log('writeAutoSmall()')
+}
+
+function autoLargeIncrease(number){
+    // Starts the interval
+    if(writeLargeStapleCountInterval == undefined){
+        clearInterval(writeLargeStapleCountInterval)
+        writeLargeStapleCountInterval = setInterval(autoStapleGenLarge, autoStapleRate)
+        console.log('interval set');
+    }
+    autoStapleLarge += number
+    writeAutoLarge()
+}
+function autoStapleGenLarge(){
+    increaseStapleCount(autoStapleLarge*autoStapleLargeMultiplier)
+}
+function writeAutoLarge(){
+    // TODO
+    console.log('writeAutoLarge()')
+    
+}
+
+
+
+
+// These are the functions for the click upgrades
+function clickUpgrade(number){
+    let clickPrice = (clickLevel*2)-1
+    console.log(clickPrice);
+    
+    if(clickPrice>money){
+        return
+    }
+
+    clickLevel+=number
+    writeClickUpgrade(clickPrice)
+}
+function writeClickUpgrade(number){
+    let clickElementUpgrade = `
+    <div id="staplerHTM" class="col-12 stapler" onclick="increaseStapleCount(${clickLevel})">
+        <div class="level">
+            <h3>Level <span id="clickLevelHTM">${clickLevel}</span></h3>
+        </div>
+    </div>
+    `
+
+    money -= number
+    writeMoney()
+    document.getElementById('clickUpgradeLevelHTM').innerText = clickLevel
+    document.getElementById('clickPriceHTM').innerText = number
+    document.getElementById('clickLevelContainerHTM').innerHTML = clickElementUpgrade
+}
+
+
+
+
+// These are the functions to upgrade the wire production
+// and write those changes to the dom. 
+// VARIABLES:
+// wire = 1000
+// wireLength = 1000
+// wirePrice = 1
+// wireUpgradeLevel = 1
+// wireUpgradePrice = 500
+// wirePriceArray[]
+function wireUpgrade(number){
+    console.log('wireUpgrade ' + wireUpgradeLevel);
+    if(wireUpgradePrice>money){
+        return
+    }
+    money -= wireUpgradePrice
+    wireUpgradePrice += 500
+    if(wireUpgradeLevel<wirePriceArray.length){
+        wireUpgradeLevel++
+    }else{
+        wireUpgradeLevel = wirePriceArray.length
+    }
+    drawWire()
+}
+function drawWire(){
+    let array = wirePriceArray
+    let price = Math.floor(Math.random()*(array[wireUpgradeLevel-1].max - array[wireUpgradeLevel-1].min) +1 +array[wireUpgradeLevel-1].min)
+    wireLength = array[wireUpgradeLevel-1].length
+
+    document.getElementById('wireUpgradeLevelHTM').innerText = wireUpgradeLevel
+    document.getElementById('wireUpgradePriceHTM').innerText = wireUpgradePrice
+    document.getElementById('wirePurchaseHTM').innerText = price
+    document.getElementById('wirePurchaseLengthHTM').innerText = wireLength
+
+    writeMoney()
+}
+
+
+
+
+// These are used to track the production speed of
+// both money and staples
+let incomeTrackInterval = setInterval(incomeTrack, 1000)
+let moneyTrack1 = 0
+let moneyTrack2 = 0
+let stapleTrack1 = 0
+let stapleTrack2 = 0
+
+function incomeTrack(){
+    moneyTrack2 = money
+    stapleTrack2 = stapleCount
+
+    let moneyDiff = moneyTrack2 - moneyTrack1
+    let staplesDiff = stapleTrack2 - stapleTrack1
+    
+    document.getElementById('incomeMoneyHTM').innerText = Math.floor(moneyDiff*100)/100 
+    document.getElementById('incomeStaplesHTM').innerText = staplesDiff
+    
+    moneyTrack1 = money
+    stapleTrack1 = stapleCount
+}
+
+
+
+writeMarket()
+writeStapleCount()
+writeMoney()
